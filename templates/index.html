@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1110"><title>ZENFURY CHAT</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page">
+  <main class="auth-shell glass">
+    <div class="brand-mark">Z</div>
+    <div class="eyebrow">PRIVATE MESSAGING</div>
+    <h1>ZENFURY <span>CHAT</span></h1>
+    <p class="subhead">Obrolanmu, ruangmu.</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}<div class="flash-list">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+    {% endwith %}
+    <div class="auth-tabs">
+      <button class="tab active" data-panel="login-panel">Masuk</button>
+      <button class="tab" data-panel="register-panel">Buat akun</button>
+    </div>
+    <form id="login-panel" class="auth-form" action="{{ url_for('login') }}" method="post">
+      <label>Username<input name="username" autocomplete="username" minlength="3" maxlength="24" required placeholder="username kamu"></label>
+      <label>Password<input type="password" name="password" autocomplete="current-password" required placeholder="Password"></label>
+      <button class="primary-btn" type="submit">Masuk ke chat <span>↗</span></button>
+    </form>
+    <form id="register-panel" class="auth-form hidden" action="{{ url_for('register') }}" method="post">
+      <label>Username<input name="username" autocomplete="username" minlength="3" maxlength="24" required placeholder="3–24 karakter"></label>
+      <label>Password<input type="password" name="password" autocomplete="new-password" minlength="8" required placeholder="Minimal 8 karakter"></label>
+      <button class="primary-btn" type="submit">Buat akun <span>↗</span></button>
+    </form>
+    <div class="auth-foot"><span class="status-dot"></span> Simple. Private. ZENFURY.</div>
+  </main>
+  <script>
+    document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab));
+      document.querySelectorAll('.auth-form').forEach(f => f.classList.toggle('hidden', f.id !== tab.dataset.panel));
+    }));
+  </script>
+</body>
+</html>
